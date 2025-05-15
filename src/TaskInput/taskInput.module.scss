@@ -1,0 +1,24 @@
+.title {
+  margin-bottom: 2rem;
+}
+.form {
+  display: flex;
+
+  input {
+    flex-grow: 1;
+    margin-right: 0.5rem;
+    max-width: 40rem;
+    min-width: 10%;
+    max-height: 100%;
+    border-radius: 0.7rem;
+    padding: 0.5rem;
+    border-width: 1px;
+  }
+  button {
+    flex-shrink: 0;
+    border-radius: 0.7rem;
+    border-width: 1px;
+    max-width: 10rem;
+    min-width: 5rem;
+  }
+}

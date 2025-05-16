@@ -21,4 +21,12 @@
     max-width: 10rem;
     min-width: 5rem;
   }
+  button:hover {
+    cursor: pointer;
+    background-color: aquamarine;
+  }
+  button:focus {
+    outline: none;
+    background-color: rgb(55, 208, 55);
+  }
 }

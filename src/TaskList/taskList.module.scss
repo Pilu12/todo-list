@@ -3,10 +3,14 @@
 }
 .task {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
+}
+.task:hover {
+  background-color: #e5e5e5;
+  box-shadow: #b2b7bb;
 }
 .taskCheckbox {
   flex: 0 0 10%;
@@ -28,10 +32,23 @@
   flex: 0 0 20%;
   max-width: 20%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 }
 .taskBtn {
+  margin: 0 2px;
+  border-radius: 0.7rem;
+  border-width: 1px;
   flex: 0 0 48%;
-  max-width: 50%rem;
+  width: 48%;
+  height: 100%;
   font-size: 1.5rem;
+}
+button:hover {
+  cursor: pointer;
+  background-color: aquamarine;
+}
+button:focus {
+  outline: none;
+  background-color: rgb(55, 208, 55);
 }

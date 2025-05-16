@@ -4,6 +4,17 @@ import TaskList from '../TaskList'
 import styles from './todoList.module.scss'
 import { Todo } from '../@types/todo.type'
 
+interface HandleTodos {
+  (todos: Todo[]): Todo[]
+}
+
+const syncReactToLocal = (handNewTodos: HandleTodos) => {
+  const todoList = localStorage.getItem('todoList')
+  const todoObj = JSON.parse(todoList || '[]')
+  const newTodoObj = handNewTodos(todoObj)
+  localStorage.setItem('todoList', JSON.stringify(newTodoObj))
+}
+
 export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [curTodo, setCurTodo] = useState<Todo | null>(null)
@@ -21,10 +32,7 @@ export default function TodoList() {
       done: false
     }
     setTodos((prev) => [...prev, todo])
-    const todoList = localStorage.getItem('todoList')
-    const todoObj = JSON.parse(todoList || '[]')
-    const newTodoObj = [...todoObj, todo]
-    localStorage.setItem('todoList', JSON.stringify(newTodoObj))
+    syncReactToLocal((todosObj: Todo[]) => [...todosObj, todo])
   }
 
   const handleDoneTodo = (id: string, done: boolean) => {
@@ -46,26 +54,26 @@ export default function TodoList() {
   }
 
   const finishedEditTodo = () => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === curTodo?.id ? { ...todo, title: curTodo.title } : todo
-      )
-    )
-
-    const todoList = localStorage.getItem('todoList')
-    const todoObj = JSON.parse(todoList || '[]')
-    const newTodoObj = todoObj.map((todo: Todo) =>
-      todo.id === (curTodo as Todo).id
-        ? { ...todo, title: (curTodo as Todo).title }
-        : todo
-    )
-    localStorage.setItem('todoList', JSON.stringify(newTodoObj))
+    const handle = (todosObj: Todo[]) => {
+      return todosObj.map((todo) => {
+        if (todo.id === curTodo?.id) {
+          return { ...todo, title: curTodo.title }
+        }
+        return todo
+      })
+    }
+    setTodos(handle)
     setCurTodo(null)
+    syncReactToLocal(handle)
   }
 
   const delTodo = (id: string) => {
     if (curTodo?.id === id) setCurTodo(null)
-    setTodos((prev) => prev.filter((todo) => todo.id !== id))
+    const handle = (todosObj: Todo[]) => {
+      return todosObj.filter((todo) => todo.id !== id)
+    }
+    setTodos(handle)
+    syncReactToLocal(handle)
   }
 
   return (
